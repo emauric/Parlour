@@ -63,7 +63,7 @@ while True:
     print(addr[0] + " connected")
 
     # creates and individual thread for every user that connects
-    t = threading.Thread(client_thread, (conn, addr), daemon = True)
+    t = threading.Thread(target=client_thread, args=(conn, addr), daemon = True)
     t.start()
 
     conn.close()
