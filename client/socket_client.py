@@ -6,7 +6,7 @@ import threading
 host, port = sys.argv[1], int(sys.argv[2])
 # IPV4 addr, TCP socket type
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.connect(host, port)  # connect to server
+server.connect((host, port))  # connect to server
 
 
 # send messages via input
