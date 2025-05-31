@@ -1,3 +1,7 @@
+![Project Status](https://img.shields.io/badge/status-broken-red)
+> This project is currently in development and not yet fully functional.
+> Known issues: client disconnections, incomplete message broadcasting.
+
 # Parlour-Chat
 
 A lightweight real-time chat application built with python. This app will support direct messaging and possibly group chats, featuring a client-server architecture and basic GUI for user interaction.
