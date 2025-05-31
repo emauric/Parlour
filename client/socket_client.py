@@ -15,10 +15,9 @@ def write_sockets():
         try:
             message = input("> ")
             server.send(message.encode('utf-8'))
-        except:
-            print("An error occurred while sending.")
-            server.close()
-            break
+        except Exception as e:
+            print("Error Sending: ", e)
+            continue
 
 
 # receive messages via recv
@@ -26,13 +25,13 @@ def read_sockets():
     while True:
         try:
             message = server.recv(2048).decode('utf-8')
-            print(message)
-        except:
-            print("An error occurred while reading.")
-            server.close()
-            break
+            if message:
+                print(message)
+        except Exception as e:
+            print("Error Reading: ", e)
+            continue
 
 
 # Daemon threads will exit when the main program exits
-t1 = threading.Thread(target=read_sockets, daemon=True).start()
-t2 = threading.Thread(target=write_sockets, daemon=True).start()
+t1 = threading.Thread(target=read_sockets).start()
+t2 = threading.Thread(target=write_sockets).start()

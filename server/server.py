@@ -29,7 +29,10 @@ def client_thread(conn, addr):
                 broadcast(message_to_send, conn)
 
             else:
+                # only break loop when sure the client has fully disconnected
+                print(addr[0], "disconnected")
                 remove(conn)
+                break
 
         except:
             continue
@@ -65,6 +68,3 @@ while True:
     # creates and individual thread for every user that connects
     t = threading.Thread(target=client_thread, args=(conn, addr), daemon = True)
     t.start()
-
-    conn.close()
-    server.close()
