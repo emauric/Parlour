@@ -1,6 +1,6 @@
 ![Project Status](https://img.shields.io/badge/status-broken-red)
 > This project is currently in development and not yet fully functional.
-> Known issues: client disconnections, incomplete message broadcasting.
+> Known issues: broken pipe errors during longer use.
 
 # Parlour-Chat
 
