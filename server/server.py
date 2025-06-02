@@ -1,6 +1,7 @@
 import threading
 import sys
 import socket
+import time
 
 # Host & Port
 host, port = sys.argv[1], int(sys.argv[2])
@@ -34,8 +35,11 @@ def client_thread(conn, addr):
                 remove(conn)
                 break
 
-        except:
-            continue
+        except Exception as e:
+            print(f"Error with {addr[0]}: ", e)
+            remove(conn)
+            conn.close()
+            break
 
 
 # broadcast message to all clients whose object is not the same as the one sending the message
@@ -44,9 +48,9 @@ def broadcast(message, connection):
         if clients != connection:
             try:
                 clients.send(message)
-            except:
+            except Exception as e:
+                print(f"Error broadcasting message: ", e)
                 clients.close()
-
                 remove(clients)  # if link is broken, remove client
 
 
@@ -55,16 +59,25 @@ def remove(connection):
         client_list.remove(connection)
 
 
-while True:
+try:
+    while True:
 
-    # accepts connection request and stores socket object/ IP address
-    conn, addr = server.accept()
+        # accepts connection request and stores socket object/ IP address
+        conn, addr = server.accept()
 
-    # maintains list of clients
-    client_list.append(conn)
-    # prints the address of the user that just connected
-    print(addr[0] + " connected")
+        # maintains list of clients
+        client_list.append(conn)
+        # prints the address of the user that just connected
+        print(addr[0] + " connected")
 
-    # creates and individual thread for every user that connects
-    t = threading.Thread(target=client_thread, args=(conn, addr), daemon = True)
-    t.start()
+        # creates an individual thread for every user that connects
+        t = threading.Thread(target=client_thread, args=(conn, addr), daemon=True)
+        t.start()
+
+except KeyboardInterrupt:
+    print("\nServer shutdown requested...")
+    time.sleep(5)
+    server.close()
+    sys.exit(0)
+finally:
+    print("Server terminated by user.")

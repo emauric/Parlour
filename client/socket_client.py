@@ -1,6 +1,7 @@
 import socket
 import sys
 import threading
+import time
 
 # Host & Port
 host, port = sys.argv[1], int(sys.argv[2])
@@ -32,6 +33,18 @@ def read_sockets():
             continue
 
 
-# Daemon threads will exit when the main program exits
-t1 = threading.Thread(target=read_sockets).start()
-t2 = threading.Thread(target=write_sockets).start()
+try:
+    # Daemon threads will exit when the main program exits
+    t1 = threading.Thread(target=read_sockets)
+    t2 = threading.Thread(target=write_sockets)
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
+except KeyboardInterrupt:
+    print("\nClient exiting...")
+    time.sleep(5)
+    server.close()
+    sys.exit(0)
+finally:
+    print("Client disconnected.")
